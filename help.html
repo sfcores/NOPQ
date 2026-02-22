@@ -1,89 +1,45 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOPQ恒星演化模拟器</title>
-    <style>
-	/* 顶部导航栏样式 */
-.top-nav {
-    background: #151535;
-    border-bottom: 2px solid #2a2a55;
-    padding: 0 20px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.nav-container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    color: #ff8e53; /* 经典的 NOPQ 橙色 */
-    font-size: 1.8rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    cursor: default;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-}
-
-.nav-links li a {
-    text-decoration: none;
-    color: #d0d0e8;
-    font-size: 1rem;
-    transition: 0.3s;
-    font-weight: 500;
-}
-
-.nav-links li a:hover {
-    color: #ff8e53;
-}
-
-.nav-links li a.active {
-    color: #ff8e53;
-    border-bottom: 2px solid #ff8e53;
-    padding-bottom: 5px;
-}
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-        body { background: #0b0b1f; color: #e6e6f0; padding: 20px; }
-        #app { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; padding: 24px; background: linear-gradient(135deg, #151535, #202045); border-radius: 10px; margin-bottom: 24px; }
-        header h1 { color: #ff8e53; font-size: 2.4rem; margin-bottom: 8px; }
-        .main-content { display: flex; gap: 20px; margin-bottom: 24px; }
-        .control-panel, .visualization, .status-bar { background: #151535; padding: 22px; border-radius: 10px; }
-        .control-panel { flex: 1; }
-        .visualization { flex: 2; text-align: center; }
-        h2 { color: #ff8e53; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #2a2a55; }
-    </style>
+  <meta charset="UTF-8">
+  <title>NGC 7293的博客：螺旋星云</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="app">
-    <nav class="top-nav">
-        <div class="nav-container">
-            <div class="logo">NOPQ</div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">首页</a></li>
-                <li><a href="help.html" class="active">帮助</a></li>
-            </ul>
-        </div>
-    </nav>
-    <header>
-        <h1>帮助文档</h1>
-        <p>敬请期待！</p>
-    </header>
-</div>
+  <nav class="top-nav">
+      <div class="nav-container">
+          <div class="logo">NOPQ</div>
+          <ul class="nav-links">
+              <li><a href="index.html" class="active">首页</a></li>
+              <li><a href="help.html" class="active">帮助</a></li>
+          </ul>
+      </div>
+  </nav>
+
+
+  <header class="header">
+    <h1>帮助文档</h1>
+    <p class="subtitle">Help Documents</p>
+  </header>
+
+  <main class="container" id="posts">
+    <a class="post-kard" href="post.html?post=1">
+      <h2>NOPQ 简介</h2>
+    </a>
+
+    <a class="post-kard" href="post.html?post=2">
+      <h2>SFCORE星流核心 简介</h2>
+    </a>
+
+    <a class="post-kard" href="post.html?post=3">
+      <h2>接下来会开发的东西</h2>
+    </a>
+
+    <a class="post-kard" href="post.html?post=4">
+      <h2>加入开发者行列</h2>
+    </a>
+
+  </main>
 </body>
 </html>

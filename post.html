@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文章内容</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="top-nav">
+      <div class="nav-container">
+          <div class="logo">NOPQ</div>
+          <ul class="nav-links">
+              <li><a href="index.html" class="active">首页</a></li>
+              <li><a href="help.html" class="active">帮助</a></li>
+          </ul>
+      </div>
+  </nav>
+
+
+  <header class="site-header">
+    <h1 id="post-title">文章标题</h1>
+    <p class="subtitle" id="post-date"></p>
+  </header>
+
+  <main class="container">
+
+    <!-- 文章内容 -->
+    <article class="post-content" id="post-content"></article>
+
+    
+    <a class="back-link" href="help.html">← 返回 "帮助" </a>
+  </main>
+
+
+
+  <script>
+    const posts = {
+      1: {
+        title: "NOPQ模拟器简介",
+        date: "2026-2-22",
+        content: `
+	  <p>NOPQ模拟器，是一款恒星演化模拟器。</p>
+	  <p>NOPQ模拟器是由SFCORE（星流核心）社团中的NGC7293同志于2026年2月17日（同时那一天也是春节）起开发的。</p>
+	  <p>NOPQ模拟器由JavaScript语言开发，没有使用框架，无比轻量，可以浏览器秒算出大概值。</p>
+	  <p>NOPQ模拟器的使命是让大家都能快速、方便地模拟恒星的演化历程。它可以用于天文教学、演示、或是“星设”设定……</p>
+	  <p>NOPQ模拟器支持将演化内容保存为.nopq的恒星专用JSON格式文件，以便后续再次返回网站进行进一步分析。</p>
+	  <p>注：NOPQ模拟器部分代码（真的是部分）为AI生成。</p>
+        `
+      },
+      2: {
+        title: "SFCORE星流核心 简介",
+        date: "2026-2-22",
+        content: `
+	  <p>Sfcore（发音类似S-four，中文名星流核心），是一个由NGC7293同志于2024年8月20日（怎么和黑神话悟空的发行时间一样？）创立的科幻讨论社团</p>
+	  <p>Sfcore社虽然是一个科幻讨论社团，但是内部成员也都喜欢讨论一些有关编程、游戏、天文还有编程的东西。如果你对这些事物感兴趣，欢迎加入。</p>
+	  <p>Sfcore社官网： https://m82.org ，QQ群： 1009846020 ，官方微信： Sfcore ， 官方B站号： 星流核心 ，官方GitHub ：sfcores （注意，这个后面有一个s）</p>
+	  <p>作者NGC7293同志</p>
+        `
+      },
+      3: {
+        title: "接下来会开发的东西",
+        date: "2026-2-22",
+        content: `
+	  <p>1.沃尔夫-拉耶星（WR星）</p>
+	  <p>超大质量恒星的特殊阶段。</p>
+	  <p>2.蓝离散星（BSS）</p>
+	  <p>“返老还童”星，这个做起来或许会有点困难，但我还是会开发的。</p>
+	  <p>3.模板</p>
+	  <p>就是现实宇宙中已有的恒星的NOPQ格式，或许会添加太阳、南河三、R
+136a1等我喜欢并且挺有趣的恒星。</p>
+	  <p>4.NOPQ星团</p>
+	  <p>就是一个简单的云盘，支持将大家的恒星.nopq文件上传至这个云盘中，每一个恒星都拥有一个“名片”，以便“星设”展示。</p>
+	  <p>5.社区版</p>
+	  <p>Stay Tuned！</p>
+        `
+      },
+      4: {
+        title: "加入开发者行列",
+        date: "2026-2-22",
+        content: `
+	  <p>邮箱x @ m82 . org</p>
+	  <p>说明加入原因，我会进一步联系你。</p>
+	  <p>目前这个项目仅由我一人<strike>和AI</strike>开发。</p>
+	  <p>盼望你的加入，希望这个项目能够越来越好！</p>
+          <p>附上GitHub库： https://github.com/sfcores/NOPQ</p>
+        `
+      }
+    };
+
+
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("post");
+    const post = posts[postId];
+
+    if (post) {
+      document.getElementById("post-title").textContent = post.title;
+      document.getElementById("post-date").textContent = post.date;
+      document.getElementById("post-content").innerHTML = post.content;
+      document.title = post.title;
+    } else {
+      document.getElementById("post-title").textContent = "PhigrOs已崩溃";
+      document.getElementById("post-content").innerHTML = "<p>感谢您的参与，愿我们在塔中重聚。崩溃的不仅仅是PhigrOs，还有本网页。</p>";
+    }
+  </script>
+</body>
+</html>

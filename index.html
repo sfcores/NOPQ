@@ -189,8 +189,8 @@ const PRESETS = {
 
 // 你可以在此添加随机新闻内容
 const RANDOM_NEWS = [
-    "恒星系表面发生中等规模耀斑，光度短暂提升15%",
-    "一颗流浪行星进入恒星系，轨道半径约2.3AU",
+    "该恒星表面发生中等规模耀斑",
+    "一颗流浪行星进入恒星系，轨道半径约4.32AU",
     "恒星系内两颗小行星碰撞，形成新的小行星带",
     "天文学家观测到该恒星周围出现行星形成盘",
     "该恒星释放高能粒子流，影响系内行星磁场",
@@ -199,6 +199,8 @@ const RANDOM_NEWS = [
     "系外探测器发现该恒星系统存在宜居带行星",
     "该恒星表面温度波动，核心氢燃烧速率变化",
     "该恒星捕获了一颗小型褐矮星，成为双星系统",
+    "一个系外文明探测了该恒星系",
+    "离该恒星系7.8光年处的两个系外文明发生了战争",
 ];
 
 let state = {
@@ -259,7 +261,7 @@ function toggleSim() {
 function step() {
     const dt = state.ms_life * 0.005; // 步进调整
     state.age += dt;
-
+    var xinwen = state.age/state.ms_life
     if (state.stage === 'main') {
         // 主序阶段质量损失（0.1% 随演化过程丢失）
         state.mass -= (state.m0 * 0.0001) * (dt / (state.ms_life / 10)); 
@@ -270,14 +272,13 @@ function step() {
             logNews("警告：核心氢枯竭！进入巨星阶段。");
         }
     } else if (state.stage === 'giant') {
-        state.radius += 0.4; 
+        state.radius += 0.3; 
         state.temp *= 0.98;
         state.lum *= 1.15;
-        if (state.radius > 25) finishEvolution();
+        if (state.radius > 30) finishEvolution();
     }
 
-    // 每隔 1234 个时间单位尝试刷新随机新闻
-    if (state.age - state.lastNewsAge >= 1234) {
+    if (xinwen%0.1 == 0) {
         triggerRandomNews();
         state.lastNewsAge = state.age;
     }
