@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOPQ恒星演化模拟器</title>
     <style>
-	/* 顶部导航栏样式 */
 .top-nav {
     background: #151535;
     border-bottom: 2px solid #2a2a55;
@@ -26,7 +25,7 @@
 }
 
 .logo {
-    color: #ff8e53; /* 经典的 NOPQ 橙色 */
+    color: #ff8e53; 
     font-size: 1.8rem;
     font-weight: bold;
     letter-spacing: 2px;
@@ -134,10 +133,16 @@
                 <input type="number" id="initial-mass" step="0.1" value="1.0">
             </div>
             
+            <div class="input-group">
+                <label>备注</label>
+                <input type="text" id="note" value="这是备注">
+            </div>
+
             <div class="btn-box">
                 <button onclick="initNewStar()">初始化</button>
                 <button id="play-btn" onclick="toggleSim()">播放</button>
             </div>
+
             <div class="btn-box">
                 <button class="btn-save" onclick="saveToNOPQ()">保存 .nopq</button>
                 <button class="btn-load">
@@ -187,7 +192,6 @@ const PRESETS = {
     'M': { m: 0.3, t: 3200, c: '#ffcc6f' }
 };
 
-// 你可以在此添加随机新闻内容
 const RANDOM_NEWS = [
     "该恒星表面发生中等规模耀斑",
     "一颗流浪行星进入恒星系，轨道半径约4.32AU",
@@ -204,6 +208,7 @@ const RANDOM_NEWS = [
 ];
 
 let state = {
+    version: "1.5",
     name: "My_Star",
     type: "G",
     age: 0,
@@ -215,7 +220,8 @@ let state = {
     stage: 'main',
     ms_life: 10000,
     timer: null,
-    lastNewsAge: 0 // 记录上次发新闻的时间
+    lastNewsAge: 0, 
+    note: "这是备注"
 };
 
 function applyTypePreset() {
@@ -224,6 +230,7 @@ function applyTypePreset() {
 }
 
 function initNewStar() {
+    state.version = "1.5.1";
     state.name = document.getElementById('star-name').value;
     state.type = document.getElementById('star-type').value;
     state.m0 = parseFloat(document.getElementById('initial-mass').value);
@@ -233,16 +240,17 @@ function initNewStar() {
     state.stage = 'main';
     state.radius = 1.0;
     state.ms_life = 10000 * Math.pow(state.m0, -2.5);
+    state.note = document.getElementById('note'.value);
     updatePhysics();
     logNews(`恒星 ${state.name} 诞生。预期主序寿命: ${state.ms_life.toFixed(1)} 百万年。`);
+    if (state.mass > 25){
+    	logNews(`注: ${state.name} 会演化成沃尔夫-拉耶星！`); //粗糙的判断
+    }
     updateUI();
 }
-
-// 抽取物理计算公式，确保质量变化联动光度和温度
 function updatePhysics() {
     if (state.stage === 'main') {
         state.lum = Math.pow(state.mass, 3.5);
-        // 温度随演化微调（模拟氢聚变堆积导致核心压力略微增加）
         state.temp = PRESETS[state.type].t * (1 + (state.age / state.ms_life) * 0.1);
     }
 }
@@ -259,28 +267,50 @@ function toggleSim() {
 }
 
 function step() {
-    const dt = state.ms_life * 0.005; // 步进调整
+    const dt = state.ms_life * 0.005; 
     state.age += dt;
-    var xinwen = state.age/state.ms_life
+    var xinwen = state.age/state.ms_life;
     if (state.stage === 'main') {
-        // 主序阶段质量损失（0.1% 随演化过程丢失）
-        state.mass -= (state.m0 * 0.0001) * (dt / (state.ms_life / 10)); 
+        state.mass -= (state.m0 * 0.00001) * (state.age / (state.ms_life / 10));
         updatePhysics();
 
         if (state.age >= state.ms_life) {
             state.stage = 'giant';
             logNews("警告：核心氢枯竭！进入巨星阶段。");
         }
-    } else if (state.stage === 'giant') {
-        state.radius += 0.3; 
-        state.temp *= 0.98;
-        state.lum *= 1.15;
-        if (state.radius > 30) finishEvolution();
-    }
+	} else if (state.stage === 'giant') {
 
-    if (xinwen%0.1 == 0) {
+    	state.radius += 0.3; 
+    	state.temp *= 0.98;
+    	state.lum *= 1.15;
+
+    	if (state.m0 > 25 && state.radius > 20 && state.stage !== 'wr') {
+        	state.stage = 'wr';
+        	state.radius = 3;
+        	state.temp = 80000;
+       		state.lum = Math.pow(state.mass, 3.8);
+        	logNews("恒星外层被强烈恒星风剥离！演化为WR星（沃尔夫-拉叶星）！");
+        	return;
+    	}
+
+    	if (state.radius > 30) finishEvolution();
+	}else if (state.stage === 'wr') {
+
+    	    state.mass -= 0.5 * (state.ms_life * 0.005 / state.ms_life);
+
+    	    if (state.mass < 8) state.mass = 8;
+
+            state.temp *= 1.01;  
+    	    state.lum = Math.pow(state.mass, 3.8);
+    	    state.radius *= 0.99;     
+
+    	    if (state.radius < 1.5) {
+        	finishEvolution();
+    	    }
+	}
+
+    if (xinwen % 0.05 == 0) {
         triggerRandomNews();
-        state.lastNewsAge = state.age;
     }
 
     updateUI();
@@ -300,9 +330,12 @@ function finishEvolution() {
     setTimeout(() => {
         state.stage = 'remnant';
         document.getElementById('star-visual').classList.remove('exploding');
-        if (state.m0 > 8) {
+        if (state.m0 > 20){
+        	state.mass = 999999999 ; state.temp = 0 ; state.lum = 0; state.radius = 0.01;
+        	logNews("超新星爆发，整片星系被照亮！形成黑洞。")
+        }else if (state.m0 > 8 && state.m0 <= 20) {
             state.temp = 100000; state.lum = 0.1; state.radius = 0.1;
-            logNews("超新星爆发！形成中子星。");
+            logNews("超新星爆发，整片星系被照亮！形成中子星。");
         } else {
             state.temp = 30000; state.lum = 0.01; state.radius = 0.2;
             logNews("形成白矮星。");
@@ -334,9 +367,10 @@ function loadFromNOPQ(event) {
             document.getElementById('star-name').value = state.name;
             document.getElementById('star-type').value = state.type;
             document.getElementById('initial-mass').value = state.m0;
+            document.getElementById('note').value = state.notes;
             logNews(`载入档案：${state.name}`);
             updateUI();
-        } catch (err) { alert("非法格式！"); }
+        } catch (err) { alert("非法格式，你这是违法行为！"); }
     };
     reader.readAsText(file);
 }
@@ -356,7 +390,12 @@ function updateUI() {
     visual.style.height = size + 'px';
     visual.style.boxShadow = `0 0 ${size/1.5}px ${color}`;
     
-    const stageNames = { 'main': '主序星', 'giant': '巨星阶段', 'remnant': '演化残骸' };
+    const stageNames = { 
+    	'main': '主序星', 
+    	'giant': '超巨星阶段',
+    	'wr': 'WR星阶段',
+    	'remnant': '演化残骸' 
+	};
     document.getElementById('star-status-text').textContent = `${state.name} [${stageNames[state.stage]}]`;
 }
 
@@ -375,7 +414,6 @@ function logNews(msg) {
     div.innerHTML = `<span style="color:#888">[T+${state.age.toFixed(0)}]</span> ${msg}`;
     container.prepend(div);
 }
-
 window.onload = applyTypePreset;
 </script>
 </body>

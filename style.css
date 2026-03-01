@@ -60,54 +60,8 @@ body {
   padding: 20px;
 }
 
-/* ===== 鏂囩珷鍗＄墖锛堥暱鏂瑰舰鎸夐挳锛  ===== */
-.post-card {
-  display: block;
-  background-color: var(--card-bg);
-  border-radius: 14px;
-  padding: 26px;
-  margin-bottom: 22px;
 
-  text-decoration: none;
-  color: inherit;
 
-  border: 2px solid transparent;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
-
-  transition: 
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.post-card h2 {
-  margin: 0 0 10px;
-  color: var(--primary);
-}
-
-.post-card p {
-  margin: 0;
-  color: var(--subtext);
-}
-
-/* ===== 鎮仠鐘舵€  ===== */
-.post-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary); /* 涓昏壊鎻忚竟 */
-  box-shadow: 0 16px 36px rgba(0, 47, 167, 0.15);
-}
-
-/* ===== 鍓壊鐐圭紑锛堝彲閫夛級 ===== */
-.post-card::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 4px;
-  margin-top: 16px;
-  background-color: var(--accent); /* 鍓壊鐐圭紑 */
-  border-radius: 2px;
-  opacity: 0.85;
-}
 .post-kard {
   display: inline-block;   /* 鉁  涓嶅啀鏄  block */
   vertical-align: top;     /* 澶氬崱鐗囧苟鎺掓椂鏇存暣榻  */

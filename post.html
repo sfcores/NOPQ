@@ -41,21 +41,29 @@
         date: "2026-2-22",
         content: `
 	  <p>NOPQ模拟器，是一款恒星演化模拟器。</p>
-	  <p>NOPQ模拟器是由SFCORE（星流核心）社团中的NGC7293同志于2026年2月17日（同时那一天也是春节）起开发的。</p>
-	  <p>NOPQ模拟器由JavaScript语言开发，没有使用框架，无比轻量，可以浏览器秒算出大概值。</p>
+	  <p>NOPQ模拟器是由SFCORE（星流核心）社团中的NGC7293同志于2026年2月17日（同时那一天也是春节、南极洲日环食）起开发的。</p>
+	  <p>NOPQ模拟器由JavaScript语言开发，没有使用框架，无比轻量，方便快捷，可以浏览器秒算出大概值。</p>
 	  <p>NOPQ模拟器的使命是让大家都能快速、方便地模拟恒星的演化历程。它可以用于天文教学、演示、或是“星设”设定……</p>
 	  <p>NOPQ模拟器支持将演化内容保存为.nopq的恒星专用JSON格式文件，以便后续再次返回网站进行进一步分析。</p>
 	  <p>注：NOPQ模拟器部分代码（真的是部分）为AI生成。</p>
+	  <p>NOPQ模拟器的由来：由于前段时间流行注册二级域名与顶级域名是倒序的有趣域名，本人注册了nopq.qpon域名</p>
+	  <p>正好当时看到一位天文圈大佬编的概念版恒星演化模拟器，我就决定做一个网页版恒星演化模拟器，并且要有保存为专用JSON文件的功能。</p>
+	  <p>然后呢？这个网站就被编出来了。后来，域名被换成了nopq.org。</p>
+	  <p>不知大家有没有发现，N,O,P,Q分别是字母表中的第14,15,16,17个字母，是连号的(我也不知道说出来有什么意义，但我就是想提一嘴。)</p>
         `
       },
       2: {
-        title: "SFCORE星流核心 简介",
+        title: "加入开发者行列",
         date: "2026-2-22",
         content: `
-	  <p>Sfcore（发音类似S-four，中文名星流核心），是一个由NGC7293同志于2024年8月20日（怎么和黑神话悟空的发行时间一样？）创立的科幻讨论社团</p>
+	  <p>Sfcore（中文名星流核心），是一个由NGC7293同志于2024年8月20日（怎么和黑神话悟空的发行时间一样？）创立的科幻讨论社团。截至2026年2月24日，该社团已有6名成员。</p>
 	  <p>Sfcore社虽然是一个科幻讨论社团，但是内部成员也都喜欢讨论一些有关编程、游戏、天文还有编程的东西。如果你对这些事物感兴趣，欢迎加入。</p>
 	  <p>Sfcore社官网： https://m82.org ，QQ群： 1009846020 ，官方微信： Sfcore ， 官方B站号： 星流核心 ，官方GitHub ：sfcores （注意，这个后面有一个s）</p>
-	  <p>作者NGC7293同志</p>
+	  <p>目前NOPQ模拟器全部由NGC7293同志一人 <strike> 和AI </strike> 开发。</p>
+	  <p>邮箱x@m82.org</p>
+	  <p>说明加入原因，我会进一步联系你。</p>
+	  <p>盼望你的加入，希望这个项目能够越来越好！</p>
+      <p>附上GitHub仓库： https://github.com/sfcores/NOPQ </p>
         `
       },
       3: {
@@ -63,7 +71,7 @@
         date: "2026-2-22",
         content: `
 	  <p>1.沃尔夫-拉耶星（WR星）</p>
-	  <p>超大质量恒星的特殊阶段。</p>
+	  <p>超大质量恒星的特殊阶段。(1.4已更新)</p>
 	  <p>2.蓝离散星（BSS）</p>
 	  <p>“返老还童”星，这个做起来或许会有点困难，但我还是会开发的。</p>
 	  <p>3.模板</p>
@@ -75,15 +83,61 @@
 	  <p>Stay Tuned！</p>
         `
       },
-      4: {
-        title: "加入开发者行列",
-        date: "2026-2-22",
+      173: {
+        title: "NOPQ使用的恒星演化公式",
+        date: "2026-2-24",
         content: `
-	  <p>邮箱x @ m82 . org</p>
-	  <p>说明加入原因，我会进一步联系你。</p>
-	  <p>目前这个项目仅由我一人<strike>和AI</strike>开发。</p>
-	  <p>盼望你的加入，希望这个项目能够越来越好！</p>
-          <p>附上GitHub库： https://github.com/sfcores/NOPQ</p>
+      <p>感谢AI的神力，将这些公式简化 <strike> (或许有点太简了) </strike> 成了JavaScript版本！</p>
+      <p>观前须知的一些变量:</p>
+      <p>mass质量 stage阶段 radius半径(仅供演示) age年龄 ms_life主序寿命 temp表面温度 lum光度 dt一步 m0初始质量</p>
+	  <p>1.主序质量损失。 </p>
+	  <p>mass -= (m0 * 0.0001) * (dt / (ms_life / 10)); </p>
+	  <p>2.主序时光度、表面温度随质量变化。</p>
+	  <p>光: lum = Math.pow(mass, 3.5); </p>
+      <p>温: temp = PRESETS[type].t * (1 + (age / ms_life) * 0.1);</p>
+      <p>注: 温度中 PRESETS[type].t 指先前用户选择的恒星光谱型中的设定的表面温度。</p>
+      <p>3.超巨星</p>
+      <p>判断: if(age>ms_life) stage='giant' ;</p>
+      <p>每一步: radius += 0.3;</p>
+      <p>temp *= 0.98;</p>
+      <p>lum *= 1.15;</p>
+      <p>4.沃尔夫-拉耶星</p>
+      <p>判断: if (state.m0 > 25 && state.radius > 20 && state.stage !== 'wr') {代码}</p>
+      <p>radius = 3; temp = 80000; lum = Math.pow(mass, 3.8);</p>
+      <p>if (radius > 30) finishEvolution() 若半径大于30，就结束演化。</p>
+      <p>mass -= 0.5 * (ms_life * 0.005 / ms_life);</p>
+      <p>if (mass<8) mass=8;</p>
+      <p>temp*=1.01;</p>
+      <p>lum = Math.pow(mass, 3.8);</p>
+      <p>radius *= 0.99;</p>
+      <p>if (radius < 1.45) finishEvolution();</p>
+      <p>5.残骸(模型无比粗糙)</p>
+      <p>黑洞: mass=999999999;lum=0;temp=0;radius=0.01;</p>
+      <p>中子星: temp = 100000; lum = 0.1; radius = 0.1;</p>
+      <p>白矮星: temp = 30000; lum = 0.01; radius = 0.2;</p>
+      <p>以上为目前NOPQ模拟器使用的所有公式，其余功能敬请期待！</p>
+        `
+      },
+      4: {
+        title: ".nopq格式规范",
+        date: "2026-2-23",
+        content: `
+	  <p>.nopq格式是NOPQ模拟器专用的JSON格式，用于保存恒星文件，也支持导入至网站进行进一步分析。</p>
+	  <p>下面是格式要求（皆为参数）：</p>
+	  <p>1.version 版本。 e.g. "1.4"</p>
+	  <p>2.name 名字。 e.g. "My_Star"</p>
+          <p>3.type 光谱型。 e.g. "F"</p>
+	  <p>4.age 年龄。 e.g. 2845</p>
+	  <p>5.m0 初始质量。 e.g. 1.4</p>
+          <p>6.lum 绝对光度。 e.g. 3.239</p>
+	  <p>7.temp 温度。 e.g. "6929"</p>
+	  <p>8.radius 半径（仅供计算和演示）。 e.g. 1</p>
+	  <p>9.stage 当前阶段。 e.g. "main"</p>
+          <p>10.ms_life 主序寿命。 e.g. "F"</p>
+	  <p>11.age 年龄。 e.g. 4312</p>
+	  <p>12.timer timer。 e.g. null</p>
+          <p>13.lastNewsAge 过去版本的格式，现在没用。 e.g. 0</p>
+          <p>14.note 备注 e.g. "这是我的恒星My_Star，它是一颗F型主序星，详细资料……"</p>
         `
       }
     };
@@ -99,8 +153,8 @@
       document.getElementById("post-content").innerHTML = post.content;
       document.title = post.title;
     } else {
-      document.getElementById("post-title").textContent = "PhigrOs已崩溃";
-      document.getElementById("post-content").innerHTML = "<p>感谢您的参与，愿我们在塔中重聚。崩溃的不仅仅是PhigrOs，还有本网页。</p>";
+      document.getElementById("post-title").textContent = "文章没有找到";
+      document.getElementById("post-content").innerHTML = "<p>文章没有找到</p>";
     }
   </script>
 </body>
