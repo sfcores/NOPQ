@@ -14,7 +14,6 @@
     align-items: center;
     margin-bottom: 20px;
 }
-
 .nav-container {
     max-width: 1200px;
     width: 100%;
@@ -23,7 +22,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
 .logo {
     color: #ff8e53; 
     font-size: 1.8rem;
@@ -31,13 +29,11 @@
     letter-spacing: 2px;
     cursor: default;
 }
-
 .nav-links {
     list-style: none;
     display: flex;
     gap: 30px;
 }
-
 .nav-links li a {
     text-decoration: none;
     color: #d0d0e8;
@@ -45,11 +41,9 @@
     transition: 0.3s;
     font-weight: 500;
 }
-
 .nav-links li a:hover {
     color: #ff8e53;
 }
-
 .nav-links li a.active {
     color: #ff8e53;
     border-bottom: 2px solid #ff8e53;
@@ -68,7 +62,8 @@
         
         .input-group { margin-bottom: 14px; }
         label { display: block; margin-bottom: 6px; color: #d0d0e8; font-size: 0.9rem; }
-        input, select { width: 100%; padding: 10px; background: #222244; border: 1px solid #333366; border-radius: 6px; color: #fff; }
+        input, select, textarea { width: 100%; padding: 10px; background: #222244; border: 1px solid #333366; border-radius: 6px; color: #fff; resize: none; }
+        textarea { height: 80px; font-size: 0.9rem; }
         
         .btn-box { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         button { background: #ff8e53; color: #fff; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; flex: 1; min-width: 80px;}
@@ -76,15 +71,12 @@
         .btn-save { background: #44aa44; }
         .btn-load { background: #4444aa; position: relative; overflow: hidden; }
         #file-input { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; }
-
         .star-display { min-height: 300px; display: flex; align-items: center; justify-content: center; position: relative; }
         .star { width: 100px; height: 100px; border-radius: 50%; transition: all 0.6s ease; position: relative; }
         .star-status { position: absolute; bottom: -30px; color: #ff8e53; font-size: 1.2rem; font-weight: bold; width: 100%; }
-
         .parameters-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
         .param-card { background: #222244; padding: 16px; border-radius: 8px; text-align: center; }
         .param-val { color: #66d9ff; font-size: 1.6rem; font-weight: bold; margin: 5px 0; }
-
         .star-news { margin-top: 20px; background: #222244; border-radius: 8px; padding: 16px; text-align: left; height: 180px; overflow-y: auto; font-size: 0.9rem; }
         .news-item { border-bottom: 1px solid #333366; padding: 5px 0; }
         @keyframes supernova { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(5); opacity: 0.5; filter: brightness(3); } 100% { transform: scale(10); opacity: 0; } }
@@ -93,7 +85,6 @@
     </style>
 </head>
 <body>
-
 <div id="app">
     <nav class="top-nav">
         <div class="nav-container">
@@ -106,9 +97,9 @@
     </nav>
     <header>
         <h1>NOPQ恒星演化模拟器</h1>
-        <p>SFCORE星流核心 荣誉出品</p>
+        <p>v1.6 星流核心 & 一颗拿着钻石剑的太阳 荣誉出品;</p>
+        <p>NOPQ模拟器正在和《行星球宇宙》联动！</p>
     </header>
-
     <div class="main-content">
         <div class="control-panel">
             <h2>新建恒星</h2>
@@ -117,32 +108,24 @@
                 <input type="text" id="star-name" value="My_Star">
             </div>
             <div class="input-group">
-                <label>初始光谱型</label>
-                <select id="star-type" onchange="applyTypePreset()">
-                    <option value="O">O型主序星</option>
-                    <option value="B">B型主序星</option>
-                    <option value="A">A型主序星</option>
-                    <option value="F">F型主序星</option>
-                    <option value="G" selected>G型主序星</option>
-                    <option value="K">K型主序星</option>
-                    <option value="M">M型主序星</option>
-                </select>
+                <label>初始质量 (M☉)</label>
+                <input type="number" id="initial-mass" step="0.1" value="1.0" onchange="autoSetSpectralType()">
             </div>
             <div class="input-group">
-                <label>初始质量 (M☉)</label>
-                <input type="number" id="initial-mass" step="0.1" value="1.0">
+                <label>恒星种类</label>
+                <select>
+                    <option selected>普通恒星</option>
+                </select>
             </div>
             
             <div class="input-group">
                 <label>备注</label>
-                <input type="text" id="note" value="这是备注">
+                <textarea id="star-notes" placeholder="输入恒星备注信息..."></textarea>
             </div>
-
             <div class="btn-box">
                 <button onclick="initNewStar()">初始化</button>
                 <button id="play-btn" onclick="toggleSim()">播放</button>
             </div>
-
             <div class="btn-box">
                 <button class="btn-save" onclick="saveToNOPQ()">保存 .nopq</button>
                 <button class="btn-load">
@@ -151,7 +134,6 @@
                 </button>
             </div>
         </div>
-
         <div class="visualization">
             <h2>演化可视化</h2>
             <div class="star-display">
@@ -165,7 +147,6 @@
             </div>
         </div>
     </div>
-
     <div class="status-bar">
         <h2>物理参数</h2>
         <div class="parameters-grid">
@@ -175,23 +156,20 @@
             <div class="param-card"><div>已演化时间 (Myr)</div><div id="v-time" class="param-val">--</div></div>
         </div>
     </div>
-
     <footer>
-        &copy; 2026 SFCORE 星流核心. All Rights Reserved. 保留所有权利。
+        &copy; 2026 SFCORE 星流核心 和  一颗拿着钻石剑的太阳 联合出品
     </footer>
 </div>
-
 <script>
-const PRESETS = {
-    'O': { m: 40, t: 35000, c: '#9bb0ff' },
-    'B': { m: 10, t: 15000, c: '#aabfff' },
-    'A': { m: 2.1, t: 8500, c: '#cad7ff' },
-    'F': { m: 1.4, t: 6500, c: '#f8f7ff' },
-    'G': { m: 1.0, t: 5778, c: '#ffe91f' },
-    'K': { m: 0.7, t: 4500, c: '#ffe2cf' },
-    'M': { m: 0.3, t: 3200, c: '#ffcc6f' }
+const SPECTRAL_TYPE_BY_MASS = {
+    'O': { min: 16, max: Infinity, t: 35000, c: '#9bb0ff' },
+    'B': { min: 2.1, max: 16, t: 15000, c: '#aabfff' },
+    'A': { min: 1.4, max: 2.1, t: 8500, c: '#cad7ff' },
+    'F': { min: 1.1, max: 1.4, t: 6500, c: '#f8f7ff' },
+    'G': { min: 0.8, max: 1.1, t: 5778, c: '#ffe91f' },
+    'K': { min: 0.4, max: 0.8, t: 4500, c: '#ffe2cf' },
+    'M': { min: 0.08, max: 0.4, t: 3200, c: '#ffcc6f' }
 };
-
 const RANDOM_NEWS = [
     "该恒星表面发生中等规模耀斑",
     "一颗流浪行星进入恒星系，轨道半径约4.32AU",
@@ -206,11 +184,11 @@ const RANDOM_NEWS = [
     "一个系外文明探测了该恒星系",
     "离该恒星系7.8光年处的两个系外文明发生了战争",
 ];
-
 let state = {
-    version: "1.5",
+    version: "1.6",
     name: "My_Star",
-    type: "G",
+    notes: "",
+    type: "G", 
     age: 0,
     m0: 1.0,
     mass: 1.0,
@@ -220,41 +198,58 @@ let state = {
     stage: 'main',
     ms_life: 10000,
     timer: null,
-    lastNewsAge: 0, 
-    note: "这是备注"
+    lastNewsAge: 0
 };
-
-function applyTypePreset() {
-    const type = document.getElementById('star-type').value;
-    document.getElementById('initial-mass').value = PRESETS[type].m;
+function autoSetSpectralType() {
+    const mass = parseFloat(document.getElementById('initial-mass').value) || 1.0;
+    for (const [type, config] of Object.entries(SPECTRAL_TYPE_BY_MASS)) {
+        if (mass >= config.min && mass < config.max) {
+            state.type = type;
+            state.temp = config.t;
+            return;
+        }
+    }
+    state.type = "O";
+    state.temp = 35000;
 }
-
 function initNewStar() {
-    state.version = "1.5.1";
+    state.version = "1.6";
     state.name = document.getElementById('star-name').value;
-    state.type = document.getElementById('star-type').value;
-    state.m0 = parseFloat(document.getElementById('initial-mass').value);
+    state.notes = document.getElementById('star-notes').value;
+    state.m0 = parseFloat(document.getElementById('initial-mass').value) || 1.0;
+    autoSetSpectralType();
+    
     state.mass = state.m0;
     state.age = 0;
     state.lastNewsAge = 0;
     state.stage = 'main';
     state.radius = 1.0;
     state.ms_life = 10000 * Math.pow(state.m0, -2.5);
-    state.note = document.getElementById('note'.value);
+    // 核心修复：先更新物理参数，再强制刷新视觉样式（初始化恒星基础尺寸/颜色）
     updatePhysics();
-    logNews(`恒星 ${state.name} 诞生。预期主序寿命: ${state.ms_life.toFixed(1)} 百万年。`);
-    if (state.mass > 25){
-    	logNews(`注: ${state.name} 会演化成沃尔夫-拉耶星！`); //粗糙的判断
-    }
+    const starVisual = document.getElementById('star-visual');
+    // 初始化恒星基础样式，确保首次渲染可见
+    starVisual.style.backgroundColor = getTempColor(state.temp);
+    starVisual.style.width = '100px';
+    starVisual.style.height = '100px';
+    starVisual.style.boxShadow = `0 0 60px ${getTempColor(state.temp)}`;
+    // 刷新所有UI（参数+状态+视觉）
     updateUI();
+    
+    logNews(`恒星 ${state.name} 诞生。`)
+    logNews(`光谱型：${state.type}型 | 预期主序寿命: ${state.ms_life.toFixed(1)} 百万年。`);
+    if (state.mass > 25){
+        logNews(`注: ${state.name} 会演化成沃尔夫-拉耶星！`);
+    }
 }
 function updatePhysics() {
     if (state.stage === 'main') {
         state.lum = Math.pow(state.mass, 3.5);
-        state.temp = PRESETS[state.type].t * (1 + (state.age / state.ms_life) * 0.1);
+        // 主序阶段温度随年龄小幅变化（基于匹配的光谱型初始温度）
+        const baseTemp = SPECTRAL_TYPE_BY_MASS[state.type].t;
+        state.temp = baseTemp * (1 + (state.age / state.ms_life) * 0.1);
     }
 }
-
 function toggleSim() {
     if (state.timer) {
         clearInterval(state.timer);
@@ -265,64 +260,62 @@ function toggleSim() {
         document.getElementById('play-btn').textContent = "暂停";
     }
 }
-
 function step() {
     const dt = state.ms_life * 0.005; 
     state.age += dt;
     var xinwen = state.age/state.ms_life;
+    
     if (state.stage === 'main') {
         state.mass -= (state.m0 * 0.00001) * (state.age / (state.ms_life / 10));
         updatePhysics();
-
         if (state.age >= state.ms_life) {
-            state.stage = 'giant';
-            logNews("警告：核心氢枯竭！进入巨星阶段。");
+	    if (state.type != 'M'){
+                state.stage = 'giant';
+                const giantType = state.m0 >= 8 ? "超巨星" : "巨星";
+                logNews(`警告：核心氢枯竭！进入${giantType}阶段。`);
+	    }else{
+		logNews(`警告：核心氢燃烧即将殆尽！`);
+		finishEvolution();
+	    }
         }
-	} else if (state.stage === 'giant') {
-
-    	state.radius += 0.3; 
-    	state.temp *= 0.98;
-    	state.lum *= 1.15;
-
-    	if (state.m0 > 25 && state.radius > 20 && state.stage !== 'wr') {
-        	state.stage = 'wr';
-        	state.radius = 3;
-        	state.temp = 80000;
-       		state.lum = Math.pow(state.mass, 3.8);
-        	logNews("恒星外层被强烈恒星风剥离！演化为WR星（沃尔夫-拉叶星）！");
-        	return;
-    	}
-
-    	if (state.radius > 30) finishEvolution();
-	}else if (state.stage === 'wr') {
-
-    	    state.mass -= 0.5 * (state.ms_life * 0.005 / state.ms_life);
-
-    	    if (state.mass < 8) state.mass = 8;
-
-            state.temp *= 1.01;  
-    	    state.lum = Math.pow(state.mass, 3.8);
-    	    state.radius *= 0.99;     
-
-    	    if (state.radius < 1.5) {
-        	finishEvolution();
-    	    }
-	}
-
-    if (xinwen % 0.05 == 0) {
-        triggerRandomNews();
+    } else if (state.stage === 'giant') {
+        state.radius += 0.3; 
+        state.temp *= 0.98;
+        state.lum *= 1.15;
+        if (state.m0 > 25 && state.radius > 20 && state.stage !== 'wr') {
+            state.stage = 'wr';
+            state.radius = 3;
+            state.temp = 80000;
+            state.lum = Math.pow(state.mass, 3.8);
+            logNews("恒星外层被强烈恒星风剥离！演化为WR星（沃尔夫-拉叶星）！");
+	    logNews("当前光谱型：W");
+            return;
+        }
+        const finishRadius = state.m0 >= 8 ? 35 : 30;
+        if (state.radius > finishRadius) finishEvolution();
+    } else if (state.stage === 'wr') {
+        state.mass -= 0.5 * (state.ms_life * 0.005 / state.ms_life);
+        if (state.mass < 8) state.mass = 8;
+        state.temp *= 1.01;  
+        state.lum = Math.pow(state.mass, 3.8);
+        state.radius *= 0.99;     
+        if (state.radius < 1.5) {
+            finishEvolution();
+        }
     }
-
+    
+    if (xinwen%0.1 == 0) {
+        triggerRandomNews();
+        state.lastNewsAge = state.age;
+    }
     updateUI();
 }
-
 function triggerRandomNews() {
     if (RANDOM_NEWS.length > 0 && RANDOM_NEWS[0] !== "") {
         const msg = RANDOM_NEWS[Math.floor(Math.random() * RANDOM_NEWS.length)];
         logNews(`[新闻] ${msg}`);
     }
 }
-
 function finishEvolution() {
     clearInterval(state.timer);
     state.timer = null;
@@ -331,9 +324,9 @@ function finishEvolution() {
         state.stage = 'remnant';
         document.getElementById('star-visual').classList.remove('exploding');
         if (state.m0 > 20){
-        	state.mass = 999999999 ; state.temp = 0 ; state.lum = 0; state.radius = 0.01;
-        	logNews("超新星爆发，整片星系被照亮！形成黑洞。")
-        }else if (state.m0 > 8 && state.m0 <= 20) {
+            state.mass = 999999999 ; state.temp = 0 ; state.lum = 0; state.radius = 0.01;
+            logNews("超新星爆发，整片星系被照亮！形成黑洞。")
+        } else if (state.m0 > 8 && state.m0 <= 20) {
             state.temp = 100000; state.lum = 0.1; state.radius = 0.1;
             logNews("超新星爆发，整片星系被照亮！形成中子星。");
         } else {
@@ -343,8 +336,8 @@ function finishEvolution() {
         updateUI();
     }, 2000);
 }
-
 function saveToNOPQ() {
+    state.notes = document.getElementById('star-notes').value;
     const dataStr = JSON.stringify(state, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -354,7 +347,6 @@ function saveToNOPQ() {
     link.click();
     URL.revokeObjectURL(url);
 }
-
 function loadFromNOPQ(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -365,40 +357,41 @@ function loadFromNOPQ(event) {
             state.timer = null;
             document.getElementById('play-btn').textContent = "播放";
             document.getElementById('star-name').value = state.name;
-            document.getElementById('star-type').value = state.type;
+            document.getElementById('star-notes').value = state.notes || "";
             document.getElementById('initial-mass').value = state.m0;
-            document.getElementById('note').value = state.notes;
+            // 载入后自动匹配光谱型
+            autoSetSpectralType();
             logNews(`载入档案：${state.name}`);
+            if (state.notes) logNews(`档案备注：${state.notes}`);
             updateUI();
         } catch (err) { alert("非法格式，你这是违法行为！"); }
     };
     reader.readAsText(file);
 }
-
 function updateUI() {
     document.getElementById('v-mass').textContent = state.mass.toFixed(3);
     document.getElementById('v-lum').textContent = state.lum.toFixed(2);
     document.getElementById('v-temp').textContent = Math.round(state.temp);
     document.getElementById('v-time').textContent = state.age.toFixed(1);
-
+    
     const visual = document.getElementById('star-visual');
     let color = getTempColor(state.temp);
-    let size = state.stage === 'remnant' ? 15 : 40 + (state.radius * 6);
-
+    let sizeBase = state.m0 >=8 && state.stage === 'giant' ? 60 : 40;
+    let size = state.stage === 'remnant' ? 15 : sizeBase + (state.radius * 6);
+    
     visual.style.backgroundColor = color;
     visual.style.width = size + 'px';
     visual.style.height = size + 'px';
     visual.style.boxShadow = `0 0 ${size/1.5}px ${color}`;
     
     const stageNames = { 
-    	'main': '主序星', 
-    	'giant': '超巨星阶段',
-    	'wr': 'WR星阶段',
-    	'remnant': '演化残骸' 
-	};
-    document.getElementById('star-status-text').textContent = `${state.name} [${stageNames[state.stage]}]`;
+        'main': '主序星', 
+        'giant': state.m0 >=8 ? '超巨星' : '巨星',
+        'wr': 'WR星阶段',
+        'remnant': '演化残骸' 
+    };
+    document.getElementById('star-status-text').textContent = `${state.name} |  ${stageNames[state.stage]}`;
 }
-
 function getTempColor(t) {
     if (t > 25000) return '#9bb0ff';
     if (t > 10000) return '#cad7ff';
@@ -406,7 +399,6 @@ function getTempColor(t) {
     if (t > 3500) return '#ffcc6f';
     return '#ff5500';
 }
-
 function logNews(msg) {
     const container = document.getElementById('news-container');
     const div = document.createElement('div');
@@ -414,7 +406,7 @@ function logNews(msg) {
     div.innerHTML = `<span style="color:#888">[T+${state.age.toFixed(0)}]</span> ${msg}`;
     container.prepend(div);
 }
-window.onload = applyTypePreset;
+
 </script>
 </body>
 </html>
